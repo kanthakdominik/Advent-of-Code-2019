@@ -1,4 +1,4 @@
-package main.java.pl.dominik.Day11;
+package main.java.pl.dominik.Day13;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -21,6 +21,18 @@ public class IntcodeComputer {
 
     public boolean isRunning() {
         return isRunning;
+    }
+
+    public void setMemoryAddress(int address, long value) {
+        program[address] = value;
+    }
+
+    public void reset() {
+        pointer = 0;
+        relativeBase = 0;
+        isRunning = true;
+        inputQueue.clear();
+        outputQueue.clear();
     }
 
     public boolean hasOutput() {

@@ -4,6 +4,7 @@ import main.java.pl.dominik.Day1.Day1;
 import main.java.pl.dominik.Day10.Day10;
 import main.java.pl.dominik.Day11.Day11;
 import main.java.pl.dominik.Day12.Day12;
+import main.java.pl.dominik.Day13.Day13;
 import main.java.pl.dominik.Day2.Day2;
 import main.java.pl.dominik.Day3.Day3;
 import main.java.pl.dominik.Day4.Day4;
@@ -69,6 +70,10 @@ public class Main {
                 }
                 case "12": {
                     executeDay12();
+                    break;
+                }
+                case "13": {
+                    executeDay13();
                     break;
                 }
                 case "q":
@@ -137,5 +142,10 @@ public class Main {
     private static void executeDay12() throws Exception {
         Day12 day12 = new Day12();
         day12.execute();
+    }
+
+    private static void executeDay13() throws Exception {
+        Day13 day13 = new Day13();
+        day13.execute();
     }
 }

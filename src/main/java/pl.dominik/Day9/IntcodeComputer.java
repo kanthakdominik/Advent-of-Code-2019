@@ -2,6 +2,7 @@ package main.java.pl.dominik.Day9;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Queue;
 
 public class IntcodeComputer {
@@ -93,7 +94,7 @@ public class IntcodeComputer {
                     break;
                 }
                 case 8: {
-                    long valueToSet = (getValueByParameter(instruction[2], pointer + 1) == getValueByParameter(instruction[1], pointer + 2)) ? 1L : 0L;
+                    long valueToSet = (Objects.equals(getValueByParameter(instruction[2], pointer + 1), getValueByParameter(instruction[1], pointer + 2))) ? 1L : 0L;
                     setProgramByParameter(instruction[0], pointer + 3, valueToSet);
                     pointer += 4;
                     break;
