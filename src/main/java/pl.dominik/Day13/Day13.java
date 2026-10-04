@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Day13 {
 
@@ -30,6 +29,7 @@ public class Day13 {
     public int countBlockTiles() throws Exception {
         intcodeComputer = new IntcodeComputer(readNumberFromFile());
         int blockCounter = 0;
+        tiles.clear();
         calculateTiles();
 
         for (Tile tile : tiles) {
@@ -43,33 +43,18 @@ public class Day13 {
     public int countGameScore() throws Exception {
         intcodeComputer = new IntcodeComputer(readNumberFromFile());
         intcodeComputer.setMemoryAddress(0, 2L);
+        tiles.clear();
+        calculateTiles();
         setMapBoundaries();
 
-
-        for(int i =0 ; i < 10; i++){
-
-            if(getPaddleTile().getXPosition() < getBallTile().getXPosition()){
-                makeMove(Joystick.RIGHT);
-            }
-            else if (getPaddleTile().getXPosition() > getBallTile().getXPosition()){
-                makeMove(Joystick.LEFT);
-            }
-            else {
-                makeMove(Joystick.NEUTRAL);
-            }
-
-            System.out.println("Ball:   x= " + getBallTile().getXPosition() + ", y= " + getBallTile().getYPosition());
-            System.out.println("Paddle: x= " + getPaddleTile().getXPosition() + ", y= " + getPaddleTile().getYPosition());
+        while (tiles.stream().anyMatch(tile -> tile.getTileType() == TileType.BLOCK)) {
+            playGame();
         }
-
-
-
-        return 0;
+        return Integer.parseInt(segmentDisplay);
     }
 
     private void calculateTiles() throws Exception {
         List<Long> intcodeOutput = new ArrayList<>();
-        tiles.clear();
 
         intcodeComputer.runIntCodeComputer();
 
@@ -81,8 +66,20 @@ public class Day13 {
             if (isSegmentDisplayOutput(intcodeOutput, i)) {
                 segmentDisplay = intcodeOutput.get(i + 2).toString();
             } else {
-                tiles.add(new Tile(intcodeOutput.get(i).intValue(), intcodeOutput.get(i + 1).intValue(),
-                        intcodeOutput.get(i + 2).intValue()));
+                Tile updatedTile = new Tile(intcodeOutput.get(i).intValue(), intcodeOutput.get(i + 1).intValue(),
+                        intcodeOutput.get(i + 2).intValue());
+
+                Tile existingTile = tiles.stream()
+                        .filter(tile -> tile.getXPosition() == updatedTile.getXPosition()
+                                && tile.getYPosition() == updatedTile.getYPosition())
+                        .findFirst()
+                        .orElse(null);
+
+                if (existingTile == null) {
+                    tiles.add(updatedTile);
+                } else {
+                    existingTile.setTileType(updatedTile.getTileType());
+                }
             }
         }
     }
@@ -101,8 +98,8 @@ public class Day13 {
         intcodeComputer.reset();
         tilte(joystick);
         calculateTiles();
-        printMap();
-        System.out.println("Segment display: " + segmentDisplay);
+//        printMap();   //optionally
+//        System.out.println("Segment display: " + segmentDisplay); //optionally
     }
 
     private Tile getBallTile() {

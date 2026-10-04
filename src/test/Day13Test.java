@@ -11,4 +11,9 @@ public class Day13Test {
     void checkCountBlockTiles() throws Exception {
         assertEquals(260, day13.countBlockTiles());
     }
+
+    @Test
+    void checkCountGameScore() throws Exception {
+        assertEquals(12952, day13.countGameScore());
+    }
 }
